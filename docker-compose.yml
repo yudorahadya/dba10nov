@@ -1,0 +1,44 @@
+version: '3.1'
+
+services:
+
+  mutualfund_db: 
+    image: mysql
+    ports:
+      - 3306:3306
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: mutualfund_product
+    volumes: 
+        - ./ddl/mysql.sql:/docker-entrypoint-initdb.d/mysql.sql
+
+  mutualfundclient_db:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: mutualfund_client
+    volumes: 
+        - ./ddl/postgresql.sql:/docker-entrypoint-initdb.d/postgresql.sql
+
+  mutualfund_employee_mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: mutualfund_employee
+    volumes: 
+        - ./ddl/mongo.js:/docker-entrypoint-initdb.d/mongo.js
+    command: [--auth]
+
+  integrator:
+    build:
+      context: .
+      dockerfile: ./python.Dockerfile
+    volumes:
+      - .:/usr/src/app
+    command: tail -f /dev/null 
