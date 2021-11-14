@@ -6,7 +6,7 @@ CREATE TABLE `categories` (
   `description` varchar(100) DEFAULT NULL,
   `picture` text,
   PRIMARY KEY (`category_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 -- mutualfund_product.suppliers definition
@@ -25,7 +25,7 @@ CREATE TABLE `suppliers` (
   `fax` varchar(100) DEFAULT NULL,
   `homepage` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`supplier_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 -- mutualfund_product.products definition
@@ -44,6 +44,35 @@ CREATE TABLE `products` (
   PRIMARY KEY (`product_id`),
   KEY `products_FK` (`category_id`),
   KEY `products_FK_1` (`supplier_id`),
-  CONSTRAINT `products_FK` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`),
-  CONSTRAINT `products_FK_1` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`supplier_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `products_supplier_id_IDX` (`supplier_id`) USING BTREE,
+  KEY `products_category_id_IDX` (`category_id`) USING BTREE
+  -- CONSTRAINT `products_categories_fk` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`),
+  -- CONSTRAINT `products_supplier_fk` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`supplier_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+ALTER TABLE products add FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`);
+
+ALTER TABLE products add FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`supplier_id`);
+
+
+ALTER TABLE categories AUTO_INCREMENT = 1;
+
+ALTER TABLE suppliers AUTO_INCREMENT = 1;
+
+ALTER TABLE products AUTO_INCREMENT = 1;
+
+
+INSERT INTO categories (category_name,description,picture) VALUES 
+('sembako','rumah tangga',NULL)
+,('obat','kesehatan',NULL)
+,('elektronik','elektronik',NULL)
+;INSERT INTO suppliers (company_name,contact_name,contact_title,address,city,region,postal_code,country,phone,fax,homepage) VALUES 
+('sinar','tanu','sales','tangerang','tangerang','tangerang','','','','',NULL)
+,('soho','kevin','sales','jakarta','jakarta','jakarta','',NULL,NULL,NULL,NULL)
+;
+INSERT INTO mutualfund_product.products (product_name,supplier_id,category_id,quantity_per_unit,unit_price,units_in_stock,units_on_order,reorder_level,discontinued) VALUES 
+('sania',1,1,'1',40000,1,1,1,1)
+,('vitamin',2,2,'20',10000,1,1,1,1)
+,('obat batuk',2,2,'1',15000,1,1,1,1)
+;

@@ -10,37 +10,37 @@ db.createUser(
     roles: [{ role: 'readWrite', db: 'mutualfund_employee' }],
   },
 );
-
+//db.region.drop()
 db.createCollection('region');
 db.region.insert (
 {
 region_id: 1,
-region_description: "sumatera"
+region_description: "jawa"
 }
 )
-
+//db.territories.drop()
 db.createCollection('territories');
 db.territories.insert(
 {
 territory_id: 1,
-territory_description: "payakumbuh",
+territory_description: "jawa barat",
 region_id: 1
 }
 )
-
+//db.employees.drop()
 db.createCollection('employees');
 
-db.employess.insert(
+db.employees.insert(
 { 
 employee_id: 1, 
-last_name: "wardi",
+last_name: "reno",
 first_name: "metronom",
 title: "programmer",
 title_of_courtesy: "MTI",
 birth_date: "1990-01-01",
 hire_date: "2020-01-01",
-address: "padang",
-city: "padang",
+address: "jakarta",
+city: "jakarta",
 region: 1,
 postal_code: "26253",
 country: "ID",
@@ -52,8 +52,8 @@ reports_to: "0",
 photo_path: ""
 }
 )
-
-db.createCollection('employee_territories');
+//db.employess_territories
+db.createCollection('employess_territories');
 
 db.employess_territories.insert(
 {

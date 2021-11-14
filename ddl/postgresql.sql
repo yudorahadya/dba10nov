@@ -1,10 +1,4 @@
-CREATE TABLE customer_customer_demo (
-	customer_id varchar NULL,
-	customer_type_id varchar NULL,
-	CONSTRAINT customer_id_customer_customer_demo UNIQUE (customer_id),
-	CONSTRAINT customer_customer_demo_fk FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
-	CONSTRAINT customer_customer_demographic_fk FOREIGN KEY (customer_type_id) REFERENCES customer_demographics(customer_type_id)
-);
+
 
 CREATE TABLE customer_demographics (
 	customer_type_id varchar NULL,
@@ -25,6 +19,23 @@ CREATE TABLE customers (
 	phone varchar NULL,
 	fax varchar NULL,
 	CONSTRAINT customer_id_customer UNIQUE (customer_id)
+);
+
+
+CREATE TABLE customer_customer_demo (
+	customer_id varchar NULL,
+	customer_type_id varchar NULL,
+	CONSTRAINT customer_id_customer_customer_demo UNIQUE (customer_id),
+	CONSTRAINT customer_customer_demo_fk FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
+	CONSTRAINT customer_customer_demographic_fk FOREIGN KEY (customer_type_id) REFERENCES customer_demographics(customer_type_id)
+);
+
+
+CREATE TABLE shippers (
+	shipper_id serial NOT NULL,
+	company_name varchar(100) NULL,
+	phone varchar(100) NULL,
+	CONSTRAINT shippers_pkey PRIMARY KEY (shipper_id)
 );
 
 CREATE TABLE orders (
@@ -48,6 +59,16 @@ CREATE TABLE orders (
 );
 
 
+
+
+
+
+CREATE INDEX orders_customer_id_idx ON public.orders (customer_id);
+CREATE INDEX orders_employee_id_idx ON public.orders (employee_id);
+CREATE INDEX orders_ship_via_idx ON public.orders (ship_via);
+
+
+
 CREATE TABLE order_details (
 	order_id serial NOT NULL,
 	product_id int4 NULL,
@@ -59,13 +80,6 @@ CREATE TABLE order_details (
 );
 
 
-CREATE TABLE shippers (
-	shipper_id serial NOT NULL,
-	company_name varchar(100) NULL,
-	phone varchar(100) NULL,
-	CONSTRAINT shippers_pkey PRIMARY KEY (shipper_id)
-);
-
 CREATE TABLE us_states (
 	state_id serial NOT NULL,
 	state_name varchar(100) NULL,
@@ -73,6 +87,126 @@ CREATE TABLE us_states (
 	state_region varchar(100) NULL,
 	CONSTRAINT us_states_pkey PRIMARY KEY (state_id)
 );
+
+-- public.stg_categories definition
+
+-- Drop table
+
+-- DROP TABLE stg_categories;
+
+CREATE TABLE stg_categories (
+	category_id int4 NULL,
+	category_name varchar NULL,
+	description varchar NULL,
+	picture text NULL
+);
+
+
+-- public.stg_employee_territories definition
+
+-- Drop table
+
+-- DROP TABLE stg_employee_territories;
+
+CREATE TABLE stg_employee_territories (
+	employee_id int4 NULL,
+	territory_id varchar NULL
+);
+
+
+-- public.stg_employees definition
+
+-- Drop table
+
+-- DROP TABLE stg_employees;
+
+CREATE TABLE stg_employees (
+	employee_id int4 NULL,
+	last_name varchar NULL,
+	first_name varchar NULL,
+	title varchar NULL,
+	title_of_courtesy varchar NULL,
+	birth_date timestamp NULL,
+	hire_date timestamp NULL,
+	address varchar NULL,
+	city varchar NULL,
+	region varchar NULL,
+	postal_code varchar NULL,
+	country varchar NULL,
+	home_phone varchar NULL,
+	"extension" varchar NULL,
+	photo text NULL,
+	notes varchar NULL,
+	reports_to int4 NULL,
+	photo_path varchar NULL
+);
+
+
+-- public.stg_products definition
+
+-- Drop table
+
+-- DROP TABLE stg_products;
+
+CREATE TABLE stg_products (
+	product_id int4 NULL,
+	product_name varchar NULL,
+	supplier_id int4 NULL,
+	category_id int4 NULL,
+	quantity_per_unit varchar NULL,
+	unit_price int4 NULL,
+	units_in_stock int4 NULL,
+	units_on_order int4 NULL,
+	reorder_level int4 NULL,
+	discontinued int4 NULL
+);
+
+
+-- public.stg_region definition
+
+-- Drop table
+
+-- DROP TABLE stg_region;
+
+CREATE TABLE stg_region (
+	region_id int4 NULL,
+	region_description varchar NULL
+);
+
+
+-- public.stg_suppliers definition
+
+-- Drop table
+
+-- DROP TABLE stg_suppliers;
+
+CREATE TABLE stg_suppliers (
+	supplier_id int4 NULL,
+	company_name varchar NULL,
+	contact_name varchar NULL,
+	contact_title varchar NULL,
+	address varchar NULL,
+	city varchar NULL,
+	postal_code varchar NULL,
+	country varchar NULL,
+	phone varchar NULL,
+	fax varchar NULL,
+	homepage varchar NULL
+);
+
+
+-- public.stg_territories definition
+
+-- Drop table
+
+-- DROP TABLE stg_territories;
+
+CREATE TABLE stg_territories (
+	territory_id varchar NULL,
+	territory_description varchar NULL,
+	region_id int4 NULL
+);
+
 
 INSERT INTO public.stg_categories (category_id,category_name,description,picture) VALUES 
 (1,'sembako','rumah tangga',NULL)
